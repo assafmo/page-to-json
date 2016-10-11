@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Page to JSON",
   "description": "A Chrome extension to download a JSON file containing data structures from the current tab",
-  "version": "0.2",
+  "version": "0.2.1",
   "icons": {
     "32": "icon.png",
     "128": "logo.png"
