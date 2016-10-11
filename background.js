@@ -180,8 +180,6 @@ function htmlToJson(html, url, date) {
   return json;
 }
 
-
-
 chrome.runtime.onMessage.addListener(function (request, sender) {
   if (request.action == 'getSource') {
     var date = new Date();
@@ -190,7 +188,9 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
   }
 });
 
-window.onload = function onWindowLoad() {
+chrome.browserAction.onClicked.addListener(function(tab) {
+  // No tabs or host permissions needed!
+  console.log('Turning ' + tab.url + ' red!');
   chrome.tabs.executeScript(null, {
     code: 'chrome.runtime.sendMessage({ \
       action: "getSource", \
@@ -198,4 +198,4 @@ window.onload = function onWindowLoad() {
       source: document.documentElement.outerHTML\
     });'
   });
-};
+});
