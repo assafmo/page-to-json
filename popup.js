@@ -33,11 +33,8 @@ function rowToJson(row, headerNames) {
   return json;
 }
 
-function htmlToJson(html, url) {
-  var $$ = $(html);
-  var json = {};
-
-  json.tables = [];
+function getTables($$) {
+  var tables = [];
 
   $$.find('table').each(function () {
     //remove inner tables
@@ -60,7 +57,7 @@ function htmlToJson(html, url) {
         table.push(row);
       });
     }
-    else if (!firstRow.children().length != $(rows[1]).children().length) {
+    else if (firstRow.children().length !== $(rows[1]).children().length) {
       //some misguided person went bananas
       rows.each(function () {
         var row = [];
@@ -85,7 +82,7 @@ function htmlToJson(html, url) {
       });
     }
     else if (!firstRow.find('th').length && firstRow.find('td').length) {
-      //some misguided person used td as header+data
+      //some misguided person used td as header and as data
       var headerNames = [];
       firstRow.find('td').each(function () {
         headerNames.push($(this).text().trim());
@@ -107,17 +104,20 @@ function htmlToJson(html, url) {
       });
     }
 
-    json.tables.push(table);
+    tables.push(table);
   });
 
-  json.lists = [];
+  return tables;
+}
+
+function getLists($$) {
+  var lists = [];
 
   $$.find('ul').each(function () {
     const list = [];
 
     $(this).find('li').each(function (i, e) {
       //remove the inner ul
-      //the inner li will be part of this ul and part of their own ul            
       $(this).find('ul').remove();
 
       var value = $(this).text()
@@ -136,10 +136,14 @@ function htmlToJson(html, url) {
         list.push(value);
     });
 
-    json.lists.push(list);
+    lists.push(list);
   });
 
-  json.links = [];
+  return lists;
+}
+
+function getLinks($$, url) {
+  var links = [];
 
   $$.find('a').each(function (i, e) {
     let link = $(this).attr('href');
@@ -154,8 +158,24 @@ function htmlToJson(html, url) {
     else
       link = (url.match(/.+?\/.+?\//)[0] + '/' + link).replace(/\/\//g, '/');
 
-    json.links.push(link);
+    links.push(link);
   });
+
+  return links;
+}
+
+function htmlToJson(html, url) {
+  var $$ = $(html);
+  var json = {};
+
+  json.url = url;
+  json.date = new Date();
+
+  json.tables = getTables($$);
+
+  json.lists = getLists($$);
+
+  json.links = getLinks($$, url);
 
   return json;
 }
