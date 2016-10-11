@@ -40,7 +40,10 @@ function htmlToJson(html, url) {
   json.tables = [];
 
   $$.find('table').each(function () {
-    const table = [];
+    //remove inner tables
+    $(this).find('table').remove();
+
+    var table = [];
 
     var rows = $(this).find('tr');
     if (!rows.length)
@@ -117,7 +120,18 @@ function htmlToJson(html, url) {
       //the inner li will be part of this ul and part of their own ul            
       $(this).find('ul').remove();
 
-      const value = $(this).text().trim();
+      var value = $(this).text()
+        .split('\n')
+        .map(function (text) {
+          return text.trim();
+        })
+        .filter(function (text) {
+          return text;
+        });
+
+      if (value.length <= 1)
+        value = value[0];
+
       if (value)
         list.push(value);
     });

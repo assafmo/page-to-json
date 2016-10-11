@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Page to JSON",
-  "description": "This extension downloads a json file containing the data in the curennt page's data structures",
+  "description": "A Chrome extension to download a JSON file containing data structures from the current tab",
   "version": "0.1",
   "browser_action": {
     "default_icon": "icon.png",
