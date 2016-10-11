@@ -57,7 +57,18 @@ function getTables($$) {
         table.push(row);
       });
     }
-    else if (firstRow.children().length !== $(rows[1]).children().length) {
+    else if (firstRow.find('th').length) {
+      //normal table
+      var headerNames = [];
+      firstRow.find('th').each(function () {
+        headerNames.push($(this).text().trim());
+      });
+
+      rows.slice(1).each(function () {
+        table.push(rowToJson(this, headerNames));
+      });
+    }
+    else {
       //some misguided person went bananas
       rows.each(function () {
         var row = [];
@@ -79,28 +90,6 @@ function getTables($$) {
         });
 
         table.push(row);
-      });
-    }
-    else if (!firstRow.find('th').length && firstRow.find('td').length) {
-      //some misguided person used td as header and as data
-      var headerNames = [];
-      firstRow.find('td').each(function () {
-        headerNames.push($(this).text().trim());
-      });
-
-      rows.slice(1).each(function () {
-        table.push(rowToJson(this, headerNames));
-      });
-    }
-    else {
-      //normal table
-      var headerNames = [];
-      firstRow.find('th').each(function () {
-        headerNames.push($(this).text().trim());
-      });
-
-      rows.slice(1).each(function () {
-        table.push(rowToJson(this, headerNames));
       });
     }
 
@@ -191,8 +180,6 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 });
 
 chrome.browserAction.onClicked.addListener(function (tab) {
-  // No tabs or host permissions needed!
-  console.log('Turning ' + tab.url + ' red!');
   chrome.tabs.executeScript(null, {
     code: 'chrome.runtime.sendMessage({ \
       action: "getSource", \
