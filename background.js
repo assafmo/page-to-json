@@ -151,10 +151,12 @@ function getLinks($$, url) {
 
     if (!link)
       return;
-    if (link.startsWith('#'))
+    else if (link.startsWith('#'))
       return;
-    if (link.startsWith('/'))
+    else if (link.startsWith('/'))
       link = (url.match(/.+?\/.+?\//)[0] + link).replace(/\/\//g, '/');
+    else if (link.indexOf('://') > -1)
+      link;
     else
       link = (url.match(/.+?\/.+?\//)[0] + '/' + link).replace(/\/\//g, '/');
 
@@ -188,7 +190,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
   }
 });
 
-chrome.browserAction.onClicked.addListener(function(tab) {
+chrome.browserAction.onClicked.addListener(function (tab) {
   // No tabs or host permissions needed!
   console.log('Turning ' + tab.url + ' red!');
   chrome.tabs.executeScript(null, {
