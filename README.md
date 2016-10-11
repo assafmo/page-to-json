@@ -1,1 +1,1 @@
-[Chrome extension page](https://chrome.google.com/webstore/detail/page-to-json/glbjlbehokkbmdfmnkbpkiidamifooci)
+[https://chrome.google.com/webstore/detail/page-to-json/glbjlbehokkbmdfmnkbpkiidamifooci](https://chrome.google.com/webstore/detail/page-to-json/glbjlbehokkbmdfmnkbpkiidamifooci)
