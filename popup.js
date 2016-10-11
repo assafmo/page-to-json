@@ -164,12 +164,12 @@ function getLinks($$, url) {
   return links;
 }
 
-function htmlToJson(html, url) {
+function htmlToJson(html, url, date) {
   var $$ = $(html);
   var json = {};
 
   json.url = url;
-  json.date = new Date();
+  json.date = date;
 
   json.tables = getTables($$);
 
@@ -180,10 +180,13 @@ function htmlToJson(html, url) {
   return json;
 }
 
+
+
 chrome.runtime.onMessage.addListener(function (request, sender) {
   if (request.action == 'getSource') {
-    var json = htmlToJson(request.source, request.url);
-    donwloadFile(JSON.stringify(json, null, 2), 'banana.json')
+    var date = new Date();
+    var json = htmlToJson(request.source, request.url, date);
+    donwloadFile(JSON.stringify(json, null, 2), request.url + date.toJSON() + '.json')
   }
 });
 
