@@ -7,4 +7,4 @@
 * Links
 
 ## License
-The source code is available under the MIT [License](./LICENSE.md).
+[MIT](./LICENSE)
